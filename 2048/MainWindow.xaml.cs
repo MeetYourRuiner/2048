@@ -22,7 +22,7 @@ namespace _2048
     public partial class MainWindow : Window
     {
         public const int Field = 3;
-        Label[,] cell = new Label[4, 4];
+        Label[,] cell = new Label[3, 3];
         public MainWindow()
         {
             InitializeComponent();
