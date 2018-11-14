@@ -31,8 +31,9 @@ namespace _2048
             StartGame();
         }
 
-        public void StartGame()
+        private void StartGame()
         {
+
             for (int i = 0; i < Size; i++)
                 for (int k = 0; k < Size; k++)
                 {
@@ -46,7 +47,7 @@ namespace _2048
                         Background = new SolidColorBrush(Color.FromArgb(255, 147, 187, 255)),
                         Margin = new Thickness(2, 2, 2, 2),
                         FontWeight = FontWeights.Bold,
-                        FontSize = 25,
+                        FontSize = 35,
                         Foreground = Brushes.White
                     };
                     Grid.SetRow(cell[i, k], i + 1);
@@ -92,8 +93,8 @@ namespace _2048
         {
             int emptycells = 0;
             int actions = 0;
-            //W
-            if (e.Key == Key.W)
+            // W
+            if (e.Key == Key.W || e.Key == Key.Up)
             {
                 for (int col = 0; col < Size; col++)
                 {
@@ -144,8 +145,8 @@ namespace _2048
                     //
                 }
             }
-            //S
-            if (e.Key == Key.S)
+            // S
+            if (e.Key == Key.S || e.Key == Key.Down)
             {
                 for (int col = 0; col < Size; col++)
                 {
@@ -177,8 +178,7 @@ namespace _2048
                             iScore += temp[i];
                             Score.Content = iScore.ToString();
                             i--;
-                            actions++;
-                            
+                            actions++;                          
                         }
                     }
                     //
@@ -197,8 +197,8 @@ namespace _2048
                     //
                 }
             }
-            //A
-            if (e.Key == Key.A)
+            // A
+            if (e.Key == Key.A || e.Key == Key.Left)
             {
                 for (int row = 0; row < Size; row++)
                 {
@@ -230,8 +230,7 @@ namespace _2048
                             iScore += temp[i];
                             Score.Content = iScore.ToString();
                             i++;
-                            actions++;
-                            
+                            actions++;                            
                         }
                     }
                     //
@@ -250,8 +249,8 @@ namespace _2048
                     //
                 }
             }
-            //D
-            if (e.Key == Key.D)
+            // D
+            if (e.Key == Key.D || e.Key == Key.Right)
             {
                 for (int row = 0; row < Size; row++)
                 {
@@ -303,7 +302,7 @@ namespace _2048
                     //
                 }
             }
-            //Рандомить новое число, если есть свободные клетки и было совершенно любое действие
+            // Рандомить новое число, если есть свободные клетки и было совершенно любое действие
             if (emptycells > 0 && actions > 0)
             {
                 Random rand = new Random();
@@ -313,6 +312,7 @@ namespace _2048
                     cell[a, b].Content = "2";
                 else
                     cell[a, b].Content = "4";
+                Animations.PlayAnimation(cell[a, b]);
             }
         }
     }
