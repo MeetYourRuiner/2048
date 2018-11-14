@@ -59,7 +59,7 @@ namespace _2048
             cell[rand.Next(0, Size), rand.Next(0, Size)].Content = "2";
         }
 
-        public static bool SortZero(int[] array, bool IsReversed = false)
+        public static bool SortZeros(int[] array, bool IsReversed = false)
         {
             bool action = false;
             if (IsReversed)
@@ -113,7 +113,7 @@ namespace _2048
                     }
                     //
                     //Сортируем нули
-                    if (SortZero(temp))
+                    if (SortZeros(temp))
                         actions++;
                     //
                     //Складываем смежные
@@ -130,7 +130,7 @@ namespace _2048
                         }
                     }
                     //
-                    SortZero(temp);
+                    SortZeros(temp);
                     //Обновляем текст
                     for (int i = 0; i < Size; i++)
                     {
@@ -165,7 +165,7 @@ namespace _2048
                     }
                     //
                     //Сортируем нули
-                    if (SortZero(temp,true))
+                    if (SortZeros(temp,true))
                         actions++;
                     //
                     //Складываем смежные
@@ -182,7 +182,7 @@ namespace _2048
                         }
                     }
                     //
-                    SortZero(temp, true);
+                    SortZeros(temp, true);
                     //Обновляем текст
                     for (int i = Size - 1; i >= 0; i--)
                     {
@@ -217,7 +217,7 @@ namespace _2048
                     }
                     //
                     //Сортируем нули
-                    if (SortZero(temp))
+                    if (SortZeros(temp))
                         actions++;
                     //
                     //Складываем смежные
@@ -234,7 +234,7 @@ namespace _2048
                         }
                     }
                     //
-                    SortZero(temp);
+                    SortZeros(temp);
                     //Обновляем текст
                     for (int i = 0; i < Size; i++)
                     {
@@ -269,7 +269,7 @@ namespace _2048
                     }
                     //
                     //Сортируем нули
-                    if (SortZero(temp, true))
+                    if (SortZeros(temp, true))
                         actions++;
                     //
                     //Складываем смежные
@@ -287,7 +287,7 @@ namespace _2048
                         }
                     }
                     //
-                    SortZero(temp, true);
+                    SortZeros(temp, true);
                     //Обновляем текст
                     for (int i = Size - 1; i >= 0; i--)
                     {
