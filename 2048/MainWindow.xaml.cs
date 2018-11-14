@@ -21,13 +21,20 @@ namespace _2048
     /// </summary>
     public partial class MainWindow : Window
     {
-        public const int Field = 3;
-        Label[,] cell = new Label[3, 3];
+        public const int Size = 4;
+        public int iScore = 0;
+        public Label[,] cell = new Label[Size, Size];
+
         public MainWindow()
         {
             InitializeComponent();
-            for (int i = 0; i < 3; i++)
-                for (int k = 0; k < 3; k++)
+            StartGame();
+        }
+
+        public void StartGame()
+        {
+            for (int i = 0; i < Size; i++)
+                for (int k = 0; k < Size; k++)
                 {
                     cell[i, k] = new Label
                     {
@@ -36,18 +43,49 @@ namespace _2048
                         HorizontalContentAlignment = HorizontalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         VerticalAlignment = VerticalAlignment.Stretch,
-                        Background = new SolidColorBrush (Color.FromArgb(255, 255, 150, 30)),
-                        Margin = new Thickness(3,3,3,3),
+                        Background = new SolidColorBrush(Color.FromArgb(255, 147, 187, 255)),
+                        Margin = new Thickness(2, 2, 2, 2),
                         FontWeight = FontWeights.Bold,
-                        FontSize = 25
+                        FontSize = 25,
+                        Foreground = Brushes.White
                     };
                     Grid.SetRow(cell[i, k], i + 1);
                     Grid.SetColumn(cell[i, k], k);
                     MyGrid.Children.Add(cell[i, k]);
                 }
-            cell[2, 0].Content = "2";
-            cell[2, 2].Content = "2";
-            cell[2, 1].Content = "2";
+            Random rand = new Random();
+            cell[rand.Next(0, Size), rand.Next(0, Size)].Content = "2";
+            cell[rand.Next(0, Size), rand.Next(0, Size)].Content = "2";
+        }
+
+        public static bool SortZero(int[] array, bool IsReversed = false)
+        {
+            bool action = false;
+            if (IsReversed)
+                Array.Reverse(array);
+            for (int i = 0; i < Size; i++)
+            {
+                if (array[i] == 0)
+                {
+                    {
+                    for (int j = i + 1; j < Size; j++)
+                        if (array[j] != 0)
+                        {
+                            array[i] = array[j];
+                            array[j] = 0;
+                            goto Success;
+                        }
+                    goto Failure;
+                    }
+                }
+                continue;
+                Success:
+                action = true;
+            }
+            Failure:
+            if (IsReversed)
+                Array.Reverse(array);
+            return action;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -56,12 +94,12 @@ namespace _2048
             int actions = 0;
             //W
             if (e.Key == Key.W)
-            {               
-                for (int col = 0; col < 3; col++)
+            {
+                for (int col = 0; col < Size; col++)
                 {
-                    int[] temp = new int[3];
+                    int[] temp = new int[Size];
                     //Ряд в темп
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < Size; i++)
                     {
                         try
                         {
@@ -72,53 +110,48 @@ namespace _2048
                             temp[i] = 0;
                         }
                     }
-                    int loop = 0;
-                    while (loop++ < 2)
+                    //
+                    //Сортируем нули
+                    if (SortZero(temp))
+                        actions++;
+                    //
+                    //Складываем смежные
+                    for (int i = 0; i < Size - 1; i++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        if (temp[i] == temp[i + 1] && temp[i] != 0)
                         {
-                            if (temp[i] != 0 && i > 0)
-                            {
-                                if (temp[i - 1] == 0)
-                                {
-                                    if (i > 1 && temp[i - 2] == 0)
-                                    {
-                                        temp[i - 2] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                    else
-                                    {
-                                        temp[i - 1] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                }
-                            }
-                            if (temp[i] != 0 && i > 0 && temp[i-1] == temp[i])
-                            {
-                                temp[i - 1] += temp[i - 1];
-                                temp[i] = 0;
-                                actions++;
-                            }
+                            temp[i] *= 2;
+                            iScore += temp[i];
+                            Score.Content = iScore.ToString();
+                            temp[i + 1] = 0;
+                            i++;
+                            actions++;
                         }
                     }
-                    //Обновление блоков
-                    for (int i = 0; i < 3; i++)
+                    //
+                    SortZero(temp);
+                    //Обновляем текст
+                    for (int i = 0; i < Size; i++)
                     {
                         if (temp[i] != 0)
                             cell[i, col].Content = temp[i].ToString();
-                        else { cell[i, col].Content = ""; emptycells++; }
+                        else
+                        {
+                            cell[i, col].Content = "";
+                            emptycells++;
+                        }
                     }
+                    //
                 }
             }
             //S
             if (e.Key == Key.S)
             {
-                for (int col = 0; col < 3; col++)
+                for (int col = 0; col < Size; col++)
                 {
-                    int[] temp = new int[3];
-                    for (int i = 0; i < 3; i++)
+                    int[] temp = new int[Size];
+                    //Ряд в темп
+                    for (int i = 0; i < Size; i++)
                     {
                         try
                         {
@@ -129,53 +162,49 @@ namespace _2048
                             temp[i] = 0;
                         }
                     }
-                    int loop = 0;
-                    while (loop++ < 2)
+                    //
+                    //Сортируем нули
+                    if (SortZero(temp,true))
+                        actions++;
+                    //
+                    //Складываем смежные
+                    for (int i = Size - 1; i > 0; i--)
                     {
-                        for (int i = 2; i >= 0; i--)
+                        if (temp[i] == temp[i - 1] && temp[i] != 0)
                         {
-                            if (temp[i] != 0 && i < 2)
-                            {
-                                if (temp[i + 1] == 0)
-                                {
-                                    if (i < 1 && temp[i + 2] == 0)
-                                    {
-                                        temp[i + 2] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                    else
-                                    {
-                                        temp[i + 1] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                }
-                            }
-                            if (temp[i] != 0 && i < 2 && temp[i + 1] == temp[i])
-                            {
-                                temp[i + 1] += temp[i + 1];
-                                temp[i] = 0;
-                                actions++;
-                            }
+                            temp[i] *= 2;
+                            temp[i - 1] = 0;
+                            iScore += temp[i];
+                            Score.Content = iScore.ToString();
+                            i--;
+                            actions++;
+                            
                         }
                     }
-                    for (int i = 0; i < 3; i++)
+                    //
+                    SortZero(temp, true);
+                    //Обновляем текст
+                    for (int i = Size - 1; i >= 0; i--)
                     {
                         if (temp[i] != 0)
                             cell[i, col].Content = temp[i].ToString();
-                        else { cell[i, col].Content = ""; emptycells++; }
+                        else
+                        {
+                            cell[i, col].Content = "";
+                            emptycells++;
+                        }
                     }
+                    //
                 }
             }
             //A
             if (e.Key == Key.A)
             {
-                for (int row = 0; row < 3; row++)
+                for (int row = 0; row < Size; row++)
                 {
-                    int[] temp = new int[3];
+                    int[] temp = new int[Size];
                     //Ряд в темп
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < Size; i++)
                     {
                         try
                         {
@@ -186,52 +215,49 @@ namespace _2048
                             temp[i] = 0;
                         }
                     }
-                    int loop = 0;
-                    while (loop++ < 2)
+                    //
+                    //Сортируем нули
+                    if (SortZero(temp))
+                        actions++;
+                    //
+                    //Складываем смежные
+                    for (int i = 0; i < Size - 1; i++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        if (temp[i] == temp[i + 1] && temp[i] != 0)
                         {
-                            if (temp[i] != 0 && i > 0)
-                            {
-                                if (temp[i - 1] == 0)
-                                {
-                                    if (i > 1 && temp[i - 2] == 0)
-                                    {
-                                        temp[i - 2] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                    else
-                                    {
-                                        temp[i - 1] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                }
-                            }
-                            if (temp[i] != 0 && i > 0 && temp[i - 1] == temp[i])
-                            {
-                                temp[i - 1] += temp[i - 1];
-                                temp[i] = 0;
-                                actions++;
-                            }
+                            temp[i] *= 2;
+                            temp[i + 1] = 0;
+                            iScore += temp[i];
+                            Score.Content = iScore.ToString();
+                            i++;
+                            actions++;
+                            
                         }
                     }
-                    for (int i = 0; i < 3; i++)
+                    //
+                    SortZero(temp);
+                    //Обновляем текст
+                    for (int i = 0; i < Size; i++)
                     {
                         if (temp[i] != 0)
                             cell[row, i].Content = temp[i].ToString();
-                        else { cell[row, i].Content = ""; emptycells++; }
+                        else
+                        {
+                            cell[row ,i].Content = "";
+                            emptycells++;
+                        }
                     }
+                    //
                 }
             }
             //D
             if (e.Key == Key.D)
             {
-                for (int row = 0; row < 3; row++)
+                for (int row = 0; row < Size; row++)
                 {
-                    int[] temp = new int[3];
-                    for (int i = 0; i < 3; i++)
+                    int[] temp = new int[Size];
+                    //Ряд в темп
+                    for (int i = 0; i < Size; i++)
                     {
                         try
                         {
@@ -242,43 +268,39 @@ namespace _2048
                             temp[i] = 0;
                         }
                     }
-                    int loop = 0;
-                    while (loop++ < 2)
+                    //
+                    //Сортируем нули
+                    if (SortZero(temp, true))
+                        actions++;
+                    //
+                    //Складываем смежные
+                    for (int i = Size - 1; i > 0; i--)
                     {
-                        for (int i = 2; i >= 0; i--)
+                        if (temp[i] == temp[i - 1] && temp[i] != 0)
                         {
-                            if (temp[i] != 0 && i < 2)
-                            {
-                                if (temp[i + 1] == 0)
-                                {
-                                    if (i < 1 && temp[i + 2] == 0)
-                                    {
-                                        temp[i + 2] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                    else
-                                    {
-                                        temp[i + 1] = temp[i];
-                                        temp[i] = 0;
-                                        actions++;
-                                    }
-                                }
-                            }
-                            if (temp[i] != 0 && i < 2 && temp[i + 1] == temp[i])
-                            {
-                                temp[i + 1] += temp[i + 1];
-                                temp[i] = 0;
-                                actions++;
-                            }
+                            temp[i] *= 2;
+                            temp[i - 1] = 0;
+                            iScore += temp[i];
+                            Score.Content = iScore.ToString();
+                            i--;
+                            actions++;
+                            
                         }
                     }
-                    for (int i = 0; i < 3; i++)
+                    //
+                    SortZero(temp, true);
+                    //Обновляем текст
+                    for (int i = Size - 1; i >= 0; i--)
                     {
                         if (temp[i] != 0)
                             cell[row, i].Content = temp[i].ToString();
-                        else { cell[row, i].Content = ""; emptycells++; }
+                        else
+                        {
+                            cell[row, i].Content = "";
+                            emptycells++;
+                        }
                     }
+                    //
                 }
             }
             //Рандомить новое число, если есть свободные клетки и было совершенно любое действие
@@ -286,8 +308,11 @@ namespace _2048
             {
                 Random rand = new Random();
                 int a, b;
-                for (a = rand.Next(0, 3), b = rand.Next(0, 3); cell[a, b].Content != ""; a = rand.Next(0, 3), b = rand.Next(0, 3)) ;
-                cell[a, b].Content = "2";
+                for (a = rand.Next(0, Size), b = rand.Next(0, Size); cell[a, b].Content.ToString() != ""; a = rand.Next(0, Size), b = rand.Next(0, Size));
+                if (rand.NextDouble() > 0.11)
+                    cell[a, b].Content = "2";
+                else
+                    cell[a, b].Content = "4";
             }
         }
     }
