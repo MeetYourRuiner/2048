@@ -23,5 +23,6 @@
         <Label x:Name="Score" Content="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="25" FontWeight="Bold" Grid.Column="3" Foreground="White" Background="#FF93BBFF" VerticalAlignment="Top"/>
         <Label x:Name="ScoreText" Content="Score:" VerticalContentAlignment="Center" FontSize="25" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="1" Background="#FF93BBFF" Foreground="White" VerticalAlignment="Top"/>
         <Button x:Name="Restart" Content="Restart" Click="Restart_Click" HorizontalContentAlignment="Center" VerticalAlignment="Top" Foreground="White" Background="#FF93BBFF" FontWeight="Bold" BorderBrush="{x:Null}" FontSize="22" Height="43" Grid.ColumnSpan="2" Margin="0,0,55,0"/>
+        <Label x:Name="Won" Content="You Won" VerticalContentAlignment="Center" FontSize="25" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Background="#FF93BBFF" Foreground="White" VerticalAlignment="Bottom" Height="44" Visibility="Hidden"/>
     </Grid>
 </Window>

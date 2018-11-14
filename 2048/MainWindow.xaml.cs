@@ -121,11 +121,7 @@ namespace _2048
                     {
                         if (temp[i] == temp[i + 1] && temp[i] != 0)
                         {
-                            temp[i] *= 2;
-                            iScore += temp[i];
-                            Score.Content = iScore.ToString();
-                            temp[i + 1] = 0;
-                            i++;
+                            Merge(temp, ref i, e.Key);
                             actions++;
                         }
                     }
@@ -173,12 +169,8 @@ namespace _2048
                     {
                         if (temp[i] == temp[i - 1] && temp[i] != 0)
                         {
-                            temp[i] *= 2;
-                            temp[i - 1] = 0;
-                            iScore += temp[i];
-                            Score.Content = iScore.ToString();
-                            i--;
-                            actions++;                          
+                            Merge(temp, ref i, e.Key);
+                            actions++;
                         }
                     }
                     //
@@ -225,12 +217,8 @@ namespace _2048
                     {
                         if (temp[i] == temp[i + 1] && temp[i] != 0)
                         {
-                            temp[i] *= 2;
-                            temp[i + 1] = 0;
-                            iScore += temp[i];
-                            Score.Content = iScore.ToString();
-                            i++;
-                            actions++;                            
+                            Merge(temp, ref i, e.Key);
+                            actions++;
                         }
                     }
                     //
@@ -277,13 +265,8 @@ namespace _2048
                     {
                         if (temp[i] == temp[i - 1] && temp[i] != 0)
                         {
-                            temp[i] *= 2;
-                            temp[i - 1] = 0;
-                            iScore += temp[i];
-                            Score.Content = iScore.ToString();
-                            i--;
+                            Merge(temp, ref i, e.Key);
                             actions++;
-                            
                         }
                     }
                     //
@@ -320,6 +303,22 @@ namespace _2048
         {
             StartGame();
             iScore = 0;
+            Won.Visibility = Visibility.Hidden;
+        }
+
+        void Merge(int[] arr, ref int index, Key key)
+        {
+            int dir = -1;
+            if (key == Key.A || key == Key.Left || key == Key.W || key == Key.Up)
+                dir = 1;
+            if ((arr[index] *= 2) == 8)
+            {
+                Won.Visibility = Visibility.Visible;
+            }
+            iScore += arr[index];
+            Score.Content = iScore.ToString();
+            arr[index + dir] = 0;
+            index++;
         }
     }
 }
