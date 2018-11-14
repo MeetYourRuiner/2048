@@ -311,7 +311,7 @@ namespace _2048
             int dir = -1;
             if (key == Key.A || key == Key.Left || key == Key.W || key == Key.Up)
                 dir = 1;
-            if ((arr[index] *= 2) == 8)
+            if ((arr[index] *= 2) == 2048)
             {
                 Won.Visibility = Visibility.Visible;
             }
