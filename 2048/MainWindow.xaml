@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2048"
         mc:Ignorable="d"
-        Title="MainWindow" Height="352" Width="249" KeyDown="Window_KeyDown">
-    <Grid x:Name="MyGrid" Background="Black">
+        Title="MainWindow" Height="330" Width="247" KeyDown="Window_KeyDown">
+    <Grid x:Name="MyGrid" Background="#FFE3EDFF">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width ="*"/>
             <ColumnDefinition Width ="*"/>
             <ColumnDefinition Width ="*"/>
             <ColumnDefinition Width ="*"/>
@@ -17,7 +18,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="Score" Grid.ColumnSpan="3" Content="Content" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label x:Name="Score" Grid.ColumnSpan="2" Content="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="18" FontWeight="Bold" Grid.Column="2"/>
+        <Label x:Name="ScoreText" Grid.ColumnSpan="2" Content="Score:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="18" FontWeight="Bold" Margin="1,0,0,0"/>
     </Grid>
 </Window>
