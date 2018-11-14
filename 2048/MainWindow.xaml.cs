@@ -315,5 +315,11 @@ namespace _2048
                 Animations.PlayAnimation(cell[a, b]);
             }
         }
+
+        private void Restart_Click(object sender, RoutedEventArgs e)
+        {
+            StartGame();
+            iScore = 0;
+        }
     }
 }

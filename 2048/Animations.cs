@@ -17,14 +17,14 @@ namespace _2048
         {
             From = new Thickness(2, 2, 2, 2),
             To = new Thickness(0, 0, 0, 0),
-            Duration = TimeSpan.FromSeconds(0.5),
+            Duration = TimeSpan.FromSeconds(0.3),
             AutoReverse = true
         };
         public static ColorAnimation labelColorAnimation = new ColorAnimation()
         {
             From = Color.FromArgb(255, 147, 187, 255),
             To = Color.FromArgb(255, 147, 225, 255),
-            Duration = TimeSpan.FromSeconds(0.5),
+            Duration = TimeSpan.FromSeconds(0.3),
             AutoReverse = true
         };
         public static void PlayAnimation(Label label)
