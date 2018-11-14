@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2048"
         mc:Ignorable="d"
-        Title="2048" Height="471.928" Width="353.231" KeyDown="Window_KeyDown" WindowStartupLocation="CenterScreen">
+        Title="2048" Height="450" Width="350" KeyDown="Window_KeyDown" WindowStartupLocation="CenterScreen" MinWidth="350" MinHeight="450">
     <Grid x:Name="MyGrid" Background="#FFF3F3F3" Margin="3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width ="*"/>
